@@ -6,8 +6,8 @@
       <div class="user-profile__follower-count">
         <strong>Followers:</strong>{{ followers }}
       </div>
-      <form class="user-profile__create-twoot" @submit.prevent="createNewTwoot">
-        <label for="newTwoot"><strong>New Twoot</strong></label>
+      <form class="user-profile__create-twoot" @submit.prevent="createNewTwoot" :class="{'--exceeded':newtwootCharacterCount > 180}">
+        <label for="newTwoot"><strong>New Twoot</strong> ({{newtwootCharacterCount}}/180)</label>
         <textarea id="newTwoot" rows="4" v-model="newTwootContent" />
 
         <div class="user-profile__create-twoot-type">
@@ -75,9 +75,10 @@ export default {
     },
   },
   computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
-    },
+    newtwootCharacterCount(){
+      return this.newTwootContent.length;
+    }
+
   },
   methods: {
     followUser() {
@@ -89,8 +90,7 @@ export default {
     createNewTwoot() {
       console.log(this.user.twoots.length)
       if (this.newTwootContent && this.selectedTwootType !== "draft") {
-        this.user.twoots.unshift({
-          
+        this.user.twoots.unshift({          
           id: this.user.twoots.length + 1,
           content: this.newTwootContent,
         });
@@ -141,6 +141,17 @@ export default {
 
   border-top: 1px solid #dfe3e8;
   padding-top: 20px;
+
+   &.--exceeded{
+    color: red;
+    border-color: red;
+
+    button{
+      background: red;
+      border: none;
+      color: white;
+    }
+   }
 }
 }
 
