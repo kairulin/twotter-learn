@@ -8,20 +8,22 @@
       </div>
       <form class="user-profile__create-twoot" @submit.prevent="createNewTwoot">
         <label for="newTwoot"><strong>New Twoot</strong></label>
-        <textarea id="newTwoot" rows="4" v-model="newTwootContent"/>
+        <textarea id="newTwoot" rows="4" v-model="newTwootContent" />
 
         <div class="user-profile__create-twoot-type">
           <label for="newTwootType"><strong>Type: </strong></label>
           <select id="newTwootType" v-model="selectedTwootType">
-            <option :value="option.value" v-for="(option,index) in twootTypes" :key="index">
-              {{option.name}}
+            <option
+              :value="option.value"
+              v-for="(option, index) in twootTypes"
+              :key="index"
+            >
+              {{ option.name }}
             </option>
           </select>
         </div>
 
-        <button>
-          Twoot!
-        </button>
+        <button>Twoot!</button>
       </form>
     </div>
     <div class="user-profile__twoots-wrapper">
@@ -29,9 +31,9 @@
         v-for="twoot in user.twoots"
         :key="twoot.id"
         :username="user.username"
-        :twoot="twoot"      
+        :twoot="twoot"
         @favourite="toggleFavourite"
-        />    
+      />
     </div>
   </div>
 </template>
@@ -45,11 +47,11 @@ export default {
   props: {},
   data() {
     return {
-      newTwootContent:'',
-      selectedTwootType:'instant',
-      twootTypes:[
-        {value:'draft',name:'Draft'},
-        {value:'instant',name:'Instant Twoot'}
+      newTwootContent: "",
+      selectedTwootType: "instant",
+      twootTypes: [
+        { value: "draft", name: "Draft" },
+        { value: "instant", name: "Instant Twoot" },
       ],
       followers: 0,
       user: {
@@ -81,18 +83,20 @@ export default {
     followUser() {
       this.followers++;
     },
-    toggleFavourite(id){
-      console.log(`Favourited Tweet #${id}`)
+    toggleFavourite(id) {
+      console.log(`Favourited Tweet #${id}`);
     },
-    createNewTwoot(){
-      if(this.newTwootContent && this.selectedTwootType !== 'draft'){
-        this.user.twoots.unshift ({
-          id:this.user.twoots.lenght+1,
-          content:this.newTwootContent
-        })
-        this.newTwootContent='';
+    createNewTwoot() {
+      console.log(this.user.twoots.length)
+      if (this.newTwootContent && this.selectedTwootType !== "draft") {
+        this.user.twoots.unshift({
+          
+          id: this.user.twoots.length + 1,
+          content: this.newTwootContent,
+        });
+        this.newTwootContent = "";
       }
-    }
+    },
   },
   mounted() {
     this.followUser();
@@ -101,42 +105,47 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .user-profile {
   display: grid;
   grid-template-columns: 1fr 3fr;
   /* width: 100%; */
   padding: 50px 5%;
-}
 
-.user-profile__user-panel {
+  .user-profile__user-panel {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #dfe3e8;
+
+    h1 {
+      margin: 0;
+    }
+
+    .user-profile__admin-badge {
+      background: rebeccapurple;
+      color: white;
+      border-radius: 5px;
+      margin-right: auto;
+      padding: 0 10px;
+      font-weight: bold;
+    }
+  }
+
+  .user-profile__create-twoot {
   display: flex;
   flex-direction: column;
-  margin-right: 50px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 5px;
-  border: 1px solid #dfe3e8;
-}
 
-.user-profile__admin-badge {
-  background: rebeccapurple;
-  color: white;
-  border-radius: 5px;
-  margin-right: auto;
-  padding: 0 10px;
-  font-weight: bold;
-}
-
-.user-profile__create-twoot{
-  display: flex;
-  flex-direction: column;
-
-  border-top:1px solid #dfe3e8;
+  border-top: 1px solid #dfe3e8;
   padding-top: 20px;
 }
+}
 
-h1 {
-  margin: 0;
+.user-profile__twoots-wrapper{
+  display: grid;
+  grid-gap:10px;
 }
 </style>
